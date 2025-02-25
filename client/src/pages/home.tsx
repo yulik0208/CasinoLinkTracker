@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
@@ -28,13 +28,26 @@ const iconMap = {
 };
 
 export default function Home() {
+  const [visitId, setVisitId] = useState<number | null>(null);
+
   useEffect(() => {
-    apiRequest("POST", getApiUrl("/visits"));
+    // Record visit when component mounts
+    const recordVisit = async () => {
+      try {
+        const response = await apiRequest("POST", getApiUrl("/visits"));
+        const visit = await response.json();
+        setVisitId(visit.id);
+      } catch (error) {
+        console.error("Failed to record visit:", error);
+      }
+    };
+    recordVisit();
   }, []);
 
   const handleClick = async (linkId: string) => {
+    if (!visitId) return;
     try {
-      await apiRequest("POST", getApiUrl("/clicks"), { visitId: 1, linkId });
+      await apiRequest("POST", getApiUrl("/clicks"), { visitId, linkId });
     } catch (error) {
       console.error("Failed to record click:", error);
     }

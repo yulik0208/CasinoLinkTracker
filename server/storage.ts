@@ -9,15 +9,10 @@ export interface IStorage {
 }
 
 export class MemStorage implements IStorage {
-  private visits: Map<number, Visit>;
-  private clicks: Map<number, Click>;
+  private visits: Visit[] = [];
+  private clicks: Click[] = [];
   private visitId: number = 1;
   private clickId: number = 1;
-
-  constructor() {
-    this.visits = new Map();
-    this.clicks = new Map();
-  }
 
   async createVisit(): Promise<Visit> {
     const visit: Visit = {
@@ -25,7 +20,7 @@ export class MemStorage implements IStorage {
       timestamp: new Date(),
       hasClicked: 0
     };
-    this.visits.set(visit.id, visit);
+    this.visits.push(visit);
     return visit;
   }
 
@@ -36,27 +31,26 @@ export class MemStorage implements IStorage {
       linkId,
       timestamp: new Date()
     };
-    this.clicks.set(click.id, click);
+    this.clicks.push(click);
     return click;
   }
 
   async updateVisitClicked(visitId: number): Promise<void> {
-    const visit = this.visits.get(visitId);
+    const visit = this.visits.find(v => v.id === visitId);
     if (visit) {
       visit.hasClicked = 1;
-      this.visits.set(visitId, visit);
     }
   }
 
   async getVisitStats(): Promise<{ total: number; clicked: number }> {
-    const total = this.visits.size;
-    const clicked = Array.from(this.visits.values()).filter(v => v.hasClicked === 1).length;
+    const total = this.visits.length;
+    const clicked = this.visits.filter(v => v.hasClicked === 1).length;
     return { total, clicked };
   }
 
   async getLinkStats(): Promise<Record<string, number>> {
     const stats: Record<string, number> = {};
-    for (const click of this.clicks.values()) {
+    for (const click of this.clicks) {
       stats[click.linkId] = (stats[click.linkId] || 0) + 1;
     }
     return stats;
