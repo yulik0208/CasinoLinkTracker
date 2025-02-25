@@ -5,8 +5,16 @@ import { Link } from "wouter";
 import { ArrowLeft, Users, MousePointer, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+interface AnalyticsStats {
+  visits: {
+    total: number;
+    clicked: number;
+  };
+  links: Record<string, number>;
+}
+
 export default function Analytics() {
-  const { data: stats, isLoading } = useQuery({
+  const { data: stats, isLoading } = useQuery<AnalyticsStats>({
     queryKey: ["/api/stats"],
   });
 
@@ -18,8 +26,11 @@ export default function Analytics() {
     );
   }
 
-  const bounceRate = stats?.visits.total 
-    ? ((stats.visits.total - stats.visits.clicked) / stats.visits.total * 100).toFixed(1)
+  // Default to empty stats if data is undefined
+  const safeStats: AnalyticsStats = stats || { visits: { total: 0, clicked: 0 }, links: {} };
+
+  const bounceRate = safeStats.visits.total 
+    ? ((safeStats.visits.total - safeStats.visits.clicked) / safeStats.visits.total * 100).toFixed(1)
     : "0";
 
   return (
@@ -40,7 +51,7 @@ export default function Analytics() {
               <Users className="w-8 h-8 text-primary" />
               <div>
                 <p className="text-sm text-muted-foreground">Total Visits</p>
-                <p className="text-2xl font-bold">{stats?.visits.total || 0}</p>
+                <p className="text-2xl font-bold">{safeStats.visits.total}</p>
               </div>
             </div>
           </Card>
@@ -50,7 +61,7 @@ export default function Analytics() {
               <MousePointer className="w-8 h-8 text-primary" />
               <div>
                 <p className="text-sm text-muted-foreground">Total Clicks</p>
-                <p className="text-2xl font-bold">{stats?.visits.clicked || 0}</p>
+                <p className="text-2xl font-bold">{safeStats.visits.clicked}</p>
               </div>
             </div>
           </Card>
@@ -69,13 +80,13 @@ export default function Analytics() {
         <Card className="p-6">
           <h2 className="text-xl font-semibold mb-4">Link Performance</h2>
           <div className="space-y-4">
-            {Object.entries(stats?.links || {}).map(([linkId, clicks]) => (
+            {Object.entries(safeStats.links).map(([linkId, clicks]) => (
               <div key={linkId}>
                 <div className="flex justify-between mb-2">
                   <span className="capitalize">{linkId}</span>
                   <span>{clicks} clicks</span>
                 </div>
-                <Progress value={clicks / (stats?.visits.total || 1) * 100} />
+                <Progress value={(clicks / safeStats.visits.total) * 100} />
               </div>
             ))}
           </div>
