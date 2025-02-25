@@ -22,9 +22,9 @@ const iconMap = {
   pragmatic: SiPlaystation,
   plinko: SiNintendo,
   candyrush: SiRoblox,
-  slots: SiAtari,
-  jackpot: SiSega,
-  bonus: SiKongregate
+  jocker: SiAtari,
+  sweetbonanza: SiSega,
+  supremehot: SiKongregate
 };
 
 export default function Home() {
@@ -81,7 +81,9 @@ export default function Home() {
                     <Icon className="w-16 h-16 text-primary animate-pulse" />
                   </div>
                   <h2 className="text-xl font-semibold text-center mb-2 capitalize">
-                    {id.replace(/([A-Z])/g, ' $1').trim()}
+                    {id === 'sweetbonanza' ? 'Sweet Bonanza' :
+                     id === 'supremehot' ? 'Supreme Hot' :
+                     id.replace(/([A-Z])/g, ' $1').trim()}
                   </h2>
                   <p className="text-center text-muted-foreground">
                     Play Now
