@@ -57,7 +57,7 @@ export default function Home() {
             Обирай найкращий оффер
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Your gateway to the best online casino experiences. Choose your game below.
+            Шалені бонуси на перший депозит
           </p>
         </div>
 
