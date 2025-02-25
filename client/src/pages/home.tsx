@@ -48,6 +48,8 @@ export default function Home() {
     if (!visitId) return;
     try {
       await apiRequest("POST", getApiUrl("/clicks"), { visitId, linkId });
+      // Redirect to vbet after recording the click
+      window.location.href = "https://www.vbet.ua/uk/";
     } catch (error) {
       console.error("Failed to record click:", error);
     }
@@ -91,7 +93,15 @@ export default function Home() {
                   className="block"
                 >
                   <div className="flex items-center justify-center mb-4">
-                    <Icon className="w-16 h-16 text-primary animate-pulse" />
+                    {id === 'pragmatic' ? (
+                      <img 
+                        src="/attached_assets/завантаження (1).jpg" 
+                        alt="Pragmatic Play"
+                        className="w-16 h-16 object-contain"
+                      />
+                    ) : (
+                      <Icon className="w-16 h-16 text-primary animate-pulse" />
+                    )}
                   </div>
                   <h2 className="text-xl font-semibold text-center mb-2 capitalize">
                     {id === 'sweetbonanza' ? 'Sweet Bonanza' :
