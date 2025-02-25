@@ -8,15 +8,23 @@ import { motion } from "framer-motion";
 import { PieChart } from "lucide-react";
 import { getApiUrl } from "@/lib/constants";
 
-// Import the proper icons
-import { SiGooglemarketingplatform, SiGoogle, SiFacebook, SiAmazon, SiEbay } from "react-icons/si";
+// Import gaming-themed icons
+import { 
+  SiPlaystation, 
+  SiNintendo,   
+  SiRoblox,     
+  SiAtari,      
+  SiSega,      
+  SiKongregate  
+} from "react-icons/si";
 
 const iconMap = {
-  olx: SiGooglemarketingplatform,
-  google: SiGoogle,
-  facebook: SiFacebook,
-  amazon: SiAmazon,
-  ebay: SiEbay,
+  pragmatic: SiPlaystation,
+  plinko: SiNintendo,
+  candyrush: SiRoblox,
+  slots: SiAtari,
+  jackpot: SiSega,
+  bonus: SiKongregate
 };
 
 export default function Home() {
@@ -49,43 +57,44 @@ export default function Home() {
             Welcome to Vegas Portal
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Your gateway to the best online experiences. Choose your destination below.
+            Your gateway to the best online casino experiences. Choose your game below.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {links.map((link) => {
-            const Icon = iconMap[link.id as keyof typeof iconMap];
-            return (
-              <motion.div
-                key={link.id}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Card className="p-6 backdrop-blur-sm bg-card/80 border-primary/20">
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => handleClick(link.id)}
-                    className="block"
-                  >
-                    <div className="flex items-center justify-center mb-4">
-                      <Icon className="w-12 h-12 text-primary" />
-                    </div>
-                    <h2 className="text-xl font-semibold text-center mb-2 capitalize">
-                      {link.id}
-                    </h2>
-                  </a>
-                </Card>
-              </motion.div>
-            );
-          })}
+          {Object.entries(iconMap).map(([id, Icon]) => (
+            <motion.div
+              key={id}
+              whileHover={{ scale: 1.05, rotate: 5 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Card className="p-6 backdrop-blur-sm bg-card/80 border-primary/20 hover:bg-primary/5 transition-colors">
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleClick(id);
+                  }}
+                  className="block"
+                >
+                  <div className="flex items-center justify-center mb-4">
+                    <Icon className="w-16 h-16 text-primary animate-pulse" />
+                  </div>
+                  <h2 className="text-xl font-semibold text-center mb-2 capitalize">
+                    {id.replace(/([A-Z])/g, ' $1').trim()}
+                  </h2>
+                  <p className="text-center text-muted-foreground">
+                    Play Now
+                  </p>
+                </a>
+              </Card>
+            </motion.div>
+          ))}
         </div>
 
         <div className="mt-12 text-center">
           <Link href="/analytics">
-            <Button variant="outline" className="gap-2">
+            <Button variant="outline" className="gap-2 bg-primary/10 hover:bg-primary/20">
               <PieChart className="w-4 h-4" />
               View Analytics
             </Button>
