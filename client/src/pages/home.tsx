@@ -54,7 +54,7 @@ export default function Home() {
       <div className="container mx-auto px-4 py-12 relative z-10">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-yellow-500 to-yellow-200 bg-clip-text text-transparent mb-4">
-            Welcome to Vegas Portal
+            Обирай найкращий оффер
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Your gateway to the best online casino experiences. Choose your game below.
