@@ -6,12 +6,13 @@ import { apiRequest } from "@/lib/queryClient";
 import { links } from "@shared/schema";
 import { motion } from "framer-motion";
 import { PieChart } from "lucide-react";
+import { getApiUrl } from "@/lib/constants";
 
 // Import the proper icons
 import { SiGooglemarketingplatform, SiGoogle, SiFacebook, SiAmazon, SiEbay } from "react-icons/si";
 
 const iconMap = {
-  olx: SiGooglemarketingplatform, // Using a general marketplace icon for OLX
+  olx: SiGooglemarketingplatform,
   google: SiGoogle,
   facebook: SiFacebook,
   amazon: SiAmazon,
@@ -20,12 +21,12 @@ const iconMap = {
 
 export default function Home() {
   useEffect(() => {
-    apiRequest("POST", "/api/visits");
+    apiRequest("POST", getApiUrl("/visits"));
   }, []);
 
   const handleClick = async (linkId: string) => {
     try {
-      await apiRequest("POST", "/api/clicks", { visitId: 1, linkId });
+      await apiRequest("POST", getApiUrl("/clicks"), { visitId: 1, linkId });
     } catch (error) {
       console.error("Failed to record click:", error);
     }
